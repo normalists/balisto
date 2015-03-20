@@ -46,6 +46,11 @@ namespace HackathonClassLibrary
 
             return dummyValor;
         }
+
+        public static void SaveAcceptedItem(PriceFeedItem feedItem)
+        {
+            // todo: throw new NotImplementedException();
+        }
     }
 
     public class NewsFeedItem
@@ -69,7 +74,7 @@ namespace HackathonClassLibrary
 
         }
 
-        public int GSN { get; set; }
+        public long GSN { get; set; }
 
         public DateTime Timestamp { get; set; }
 

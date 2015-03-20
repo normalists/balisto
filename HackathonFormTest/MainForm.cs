@@ -55,6 +55,7 @@ namespace HackathonFormTest
             {
                 case AutomatedOutcome.Accepted:
                     acceptedForm.InformAccepted(feedItem);
+                    DummyClasses.SaveAcceptedItem(feedItem);
                     break;
                 case AutomatedOutcome.Deleted:
                     break;
