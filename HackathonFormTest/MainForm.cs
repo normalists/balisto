@@ -17,7 +17,7 @@ namespace HackathonFormTest
         AcceptedForm acceptedForm;
         QuestionableForm questionableForm;
 
-        public HackathonClassLibrary.DataAccess da;
+        public DataAccess da;
 
         bool feedFormShown;
         bool acceptedFormShown;
@@ -33,7 +33,7 @@ namespace HackathonFormTest
 
         private void SetUpForm()
         {
-            da = new HackathonClassLibrary.DataAccess();
+            da = new DataAccess();
 
             feedForm = new FeedForm();
             feedForm.SetUpForm();
@@ -59,6 +59,7 @@ namespace HackathonFormTest
                 case AutomatedOutcome.Accepted:
                     acceptedForm.InformAccepted(feedItem);
                     DummyClasses.SaveAcceptedItem(feedItem);
+                    feedForm.ClearOut(feedItem);
                     break;
                 case AutomatedOutcome.Deleted:
                     break;

@@ -16,6 +16,7 @@ namespace HackathonFormTest
         private MainForm parent;
         private long startingGSN = 10000000001;
         private PriceFeedItem CurrentItem;
+        private List<PriceFeedItem> feedItemsToRemove;
 
         public FeedForm()
         {
@@ -41,6 +42,7 @@ namespace HackathonFormTest
         {
             parent = Program.GetMainForm();
             CurrentItem = PriceFeedHandler.FeedItemFromGSN(startingGSN, parent.da);
+            feedItemsToRemove = new List<PriceFeedItem>();
         }
 
         private void FeedForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -49,5 +51,19 @@ namespace HackathonFormTest
             parent.ToggleFeedDisplay();
             e.Cancel = true;
         }
+
+        internal void ClearOut(PriceFeedItem feedItem)
+        {
+            //feedItemsToRemove.Add(feedItem);
+
+            //while (feedItemsToRemove.Count > 0 && feedList.Items.Count > 10)
+            //{
+            //    feedList.Items.Remove(feedItemsToRemove[0]);
+            //}
+
+            feedList.Items.Remove(feedItem);
+        }
+
+
     }
 }
