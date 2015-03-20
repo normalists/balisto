@@ -8,10 +8,10 @@ namespace HackathonClassLibrary
 {
     public static class DummyClasses
     {
-        public static PriceFeedItem GetNextFeedItem()
+        public static PriceFeedItem GetNextFeedItem(PriceFeedItem currentPFI, DataAccess da)
         {
-            PriceFeedItem item = new PriceFeedItem();
-            item.Timestamp = DateTime.Now;
+            PriceFeedItem item = PriceFeedHandler.GetNextFeedItem(currentPFI, da);
+            //item.Timestamp = DateTime.Now;
             return item;
         }
 
@@ -47,7 +47,7 @@ namespace HackathonClassLibrary
 
         }
 
-        public int GSN { get; set; }
+        public long GSN { get; set; }
 
         public DateTime Timestamp { get; set; }
 
@@ -62,6 +62,11 @@ namespace HackathonClassLibrary
         public int StatisticType { get; set; }
 
         public decimal Value { get; set; }
+
+        public override string ToString()
+        {
+            return GSN.ToString() + " // " + Valor.ToString() + "//" + Timestamp.ToString();
+        }
 
     }
 

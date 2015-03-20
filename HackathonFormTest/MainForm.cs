@@ -14,7 +14,8 @@ namespace HackathonFormTest
     {
         FeedForm feedForm;
         AcceptedForm acceptedForm;
-
+        public HackathonClassLibrary.DataAccess da;
+        
         bool feedFormShown;
         bool acceptedFormShown;
 
@@ -22,8 +23,8 @@ namespace HackathonFormTest
 
         public MainForm()
         {
-            InitializeComponent();
-
+           InitializeComponent();
+           da = new HackathonClassLibrary.DataAccess();
         }
 
         private void SetUpForm()
