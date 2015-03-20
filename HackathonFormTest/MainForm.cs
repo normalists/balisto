@@ -17,6 +17,8 @@ namespace HackathonFormTest
         AcceptedForm acceptedForm;
         QuestionableForm questionableForm;
 
+        public HackathonClassLibrary.DataAccess da;
+
         bool feedFormShown;
         bool acceptedFormShown;
         bool questionableFormShown;
@@ -26,11 +28,13 @@ namespace HackathonFormTest
         public MainForm()
         {
             InitializeComponent();
-
+            
         }
 
         private void SetUpForm()
         {
+            da = new HackathonClassLibrary.DataAccess();
+
             feedForm = new FeedForm();
             feedForm.SetUpForm();
             feedFormShown = false;
@@ -42,7 +46,6 @@ namespace HackathonFormTest
             questionableForm = new QuestionableForm();
             questionableForm.SetUpForm();
             questionableFormShown = false;
-
 
             feedTimer.Start();
         }

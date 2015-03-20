@@ -14,6 +14,8 @@ namespace HackathonFormTest
     public partial class FeedForm : Form
     {
         private MainForm parent;
+        private long startingGSN = 10000000001;
+        private PriceFeedItem CurrentItem;
 
         public FeedForm()
         {
@@ -23,21 +25,22 @@ namespace HackathonFormTest
 
         public void SendFeedTick()
         {
+
             GetNextFeedItem();
         }
 
         private void GetNextFeedItem()
         {
-            PriceFeedItem item = DummyClasses.GetNextFeedItem();
+            PriceFeedItem item = DummyClasses.GetNextFeedItem(CurrentItem, parent.da);
             feedList.Items.Add(item);
-            //feedList.ite
-            
             parent.InformParent(item);
+            CurrentItem = item;
         }
 
         public void SetUpForm()
         {
             parent = Program.GetMainForm();
+            CurrentItem = PriceFeedHandler.FeedItemFromGSN(startingGSN, parent.da);
         }
 
         private void FeedForm_FormClosing(object sender, FormClosingEventArgs e)
