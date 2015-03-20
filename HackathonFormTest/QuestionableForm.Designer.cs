@@ -1,6 +1,6 @@
 ﻿namespace HackathonFormTest
 {
-    partial class AcceptedForm
+    partial class QuestionableForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,34 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.acceptedListBox = new System.Windows.Forms.ListBox();
+            this.questionedListBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // acceptedListBox
+            // questionedListBox
             // 
-            this.acceptedListBox.FormattingEnabled = true;
-            this.acceptedListBox.Location = new System.Drawing.Point(12, 12);
-            this.acceptedListBox.Name = "acceptedListBox";
-            this.acceptedListBox.Size = new System.Drawing.Size(509, 95);
-            this.acceptedListBox.TabIndex = 0;
+            this.questionedListBox.FormattingEnabled = true;
+            this.questionedListBox.Location = new System.Drawing.Point(12, 12);
+            this.questionedListBox.Name = "questionedListBox";
+            this.questionedListBox.Size = new System.Drawing.Size(120, 95);
+            this.questionedListBox.TabIndex = 0;
             // 
-            // AcceptedForm
+            // QuestionableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 179);
-            this.Controls.Add(this.acceptedListBox);
-            this.Location = new System.Drawing.Point(0, 100);
-            this.Name = "AcceptedForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "AcceptedForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AcceptedForm_FormClosing);
+            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Controls.Add(this.questionedListBox);
+            this.Name = "QuestionableForm";
+            this.Text = "QuestionableForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.QuestionableForm_FormClosing);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListBox acceptedListBox;
+        private System.Windows.Forms.ListBox questionedListBox;
     }
 }

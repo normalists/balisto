@@ -33,13 +33,14 @@
             this.feedTimer = new System.Windows.Forms.Timer(this.components);
             this.timeLabel = new System.Windows.Forms.Label();
             this.toggleAcceptedDisplay = new System.Windows.Forms.Button();
+            this.questionableDisplay = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // toggleFeedDisplay
             // 
             this.toggleFeedDisplay.Location = new System.Drawing.Point(12, 55);
             this.toggleFeedDisplay.Name = "toggleFeedDisplay";
-            this.toggleFeedDisplay.Size = new System.Drawing.Size(104, 23);
+            this.toggleFeedDisplay.Size = new System.Drawing.Size(130, 23);
             this.toggleFeedDisplay.TabIndex = 0;
             this.toggleFeedDisplay.Text = "Feed Display";
             this.toggleFeedDisplay.UseVisualStyleBackColor = true;
@@ -63,17 +64,28 @@
             // 
             this.toggleAcceptedDisplay.Location = new System.Drawing.Point(12, 84);
             this.toggleAcceptedDisplay.Name = "toggleAcceptedDisplay";
-            this.toggleAcceptedDisplay.Size = new System.Drawing.Size(104, 23);
+            this.toggleAcceptedDisplay.Size = new System.Drawing.Size(130, 23);
             this.toggleAcceptedDisplay.TabIndex = 0;
             this.toggleAcceptedDisplay.Text = "Accepted Display";
             this.toggleAcceptedDisplay.UseVisualStyleBackColor = true;
-            this.toggleAcceptedDisplay.Click += new System.EventHandler(this.toggleFeedDisplay_Click);
+            this.toggleAcceptedDisplay.Click += new System.EventHandler(this.toggleAcceptedDisplay_Click);
+            // 
+            // questionableDisplay
+            // 
+            this.questionableDisplay.Location = new System.Drawing.Point(12, 113);
+            this.questionableDisplay.Name = "questionableDisplay";
+            this.questionableDisplay.Size = new System.Drawing.Size(130, 23);
+            this.questionableDisplay.TabIndex = 2;
+            this.questionableDisplay.Text = "Questionable Display";
+            this.questionableDisplay.UseVisualStyleBackColor = true;
+            this.questionableDisplay.Click += new System.EventHandler(this.questionableDisplay_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 136);
+            this.ClientSize = new System.Drawing.Size(380, 157);
+            this.Controls.Add(this.questionableDisplay);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.toggleAcceptedDisplay);
             this.Controls.Add(this.toggleFeedDisplay);
@@ -93,6 +105,7 @@
         private System.Windows.Forms.Timer feedTimer;
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Button toggleAcceptedDisplay;
+        private System.Windows.Forms.Button questionableDisplay;
     }
 }
 

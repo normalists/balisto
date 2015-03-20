@@ -33,7 +33,7 @@ namespace HackathonFormTest
         {
             PriceFeedItem item = DummyClasses.GetNextFeedItem(CurrentItem, parent.da);
             feedList.Items.Add(item);
-            parent.SetTime(item.Timestamp);
+            parent.InformParent(item);
             CurrentItem = item;
         }
 

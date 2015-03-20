@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HackathonClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,21 +15,26 @@ namespace HackathonFormTest
     {
         FeedForm feedForm;
         AcceptedForm acceptedForm;
+        QuestionableForm questionableForm;
+
         public HackathonClassLibrary.DataAccess da;
-        
+
         bool feedFormShown;
         bool acceptedFormShown;
+        bool questionableFormShown;
 
         DateTime latestFeedTimestamp;
 
         public MainForm()
         {
-           InitializeComponent();
-           da = new HackathonClassLibrary.DataAccess();
+            InitializeComponent();
+            
         }
 
         private void SetUpForm()
         {
+            da = new HackathonClassLibrary.DataAccess();
+
             feedForm = new FeedForm();
             feedForm.SetUpForm();
             feedFormShown = false;
@@ -37,8 +43,31 @@ namespace HackathonFormTest
             acceptedForm.SetUpForm();
             acceptedFormShown = false;
 
+            questionableForm = new QuestionableForm();
+            questionableForm.SetUpForm();
+            questionableFormShown = false;
 
             feedTimer.Start();
+        }
+
+        private void InformObserversNewFeedItem(PriceFeedItem feedItem)
+        {
+            AutomatedOutcome outcome = DummyClasses.AutomaticProcessResult(feedItem);
+
+            switch (outcome)
+            {
+                case AutomatedOutcome.Accepted:
+                    acceptedForm.InformAccepted(feedItem);
+                    break;
+                case AutomatedOutcome.Deleted:
+                    break;
+                case AutomatedOutcome.Questionable:
+                    QuestionedPriceFeedItem qItem = new QuestionedPriceFeedItem(feedItem);
+                    questionableForm.InformQuestioned(qItem);
+                    break;
+                default:
+                    break;
+            }
         }
 
         
@@ -49,9 +78,36 @@ namespace HackathonFormTest
             
         }
 
+        private void toggleAcceptedDisplay_Click(object sender, EventArgs e)
+        {
+            ToggleAcceptedDisplay();
+        }
+
+        private void questionableDisplay_Click(object sender, EventArgs e)
+        {
+            ToggleQuestionableDisplay();
+        }
+
+        
+
+
         internal void ToggleFeedDisplay()
         {
             feedFormShown = !feedFormShown;
+
+            UpdateVisibilities();
+        }
+
+        internal void ToggleAcceptedDisplay()
+        {
+            acceptedFormShown = !acceptedFormShown;
+
+            UpdateVisibilities();
+        }
+
+        internal void ToggleQuestionableDisplay()
+        {
+            questionableFormShown = !questionableFormShown;
 
             UpdateVisibilities();
         }
@@ -65,6 +121,27 @@ namespace HackathonFormTest
             else
             {
                 feedForm.Hide();
+            }
+
+
+
+            if (acceptedFormShown)
+            {
+                acceptedForm.Show();
+            }
+            else
+            {
+                acceptedForm.Hide();
+            }
+
+
+            if (questionableFormShown)
+            {
+                questionableForm.Show();
+            }
+            else
+            {
+                questionableForm.Hide();
             }
 
         }
@@ -81,10 +158,24 @@ namespace HackathonFormTest
 
 
 
-        internal void SetTime(DateTime dateTime)
+        private void SetTime(DateTime dateTime)
         {
             latestFeedTimestamp = dateTime;
             timeLabel.Text = latestFeedTimestamp.ToString("dd/MM/yyyy HH:mm:ss.fff");
         }
+
+
+
+        internal void InformParent(PriceFeedItem item)
+        {
+            SetTime(item.Timestamp);
+            InformObserversNewFeedItem(item);
+        }
+
+
+
+
+
+        
     }
 }

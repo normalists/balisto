@@ -15,14 +15,36 @@ namespace HackathonClassLibrary
             return item;
         }
 
+        private static int itemCounter = 1;
+
         public static AutomatedOutcome AutomaticProcessResult(PriceFeedItem feedItemToCheck)
         {
-            return AutomatedOutcome.Accepted;
+            itemCounter++;
+
+            if (itemCounter % 10 == 0 )
+            {
+                return AutomatedOutcome.Questionable;
+            }
+            else
+            {
+                return AutomatedOutcome.Accepted;
+            }
+            
         }
 
         public static List<NewsFeedItem> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
         {
             return new List<NewsFeedItem>();
+        }
+
+        private static int dummyValor = 1;
+
+        public static int GetNextDummyValor()
+        {
+
+            dummyValor++;
+
+            return dummyValor;
         }
     }
 
@@ -71,13 +93,17 @@ namespace HackathonClassLibrary
     }
 
 
+
     public class QuestionedPriceFeedItem
     {
         private PriceFeedItem feedItem;
 
+        private int dummyValor;
+
         public QuestionedPriceFeedItem(PriceFeedItem feedItem)
         {
             this.feedItem = feedItem;
+            this.dummyValor = DummyClasses.GetNextDummyValor();
         }
 
         public PriceFeedItem FeedItem
@@ -86,6 +112,11 @@ namespace HackathonClassLibrary
             {
                 return feedItem;
             }
+        }
+
+        public override string ToString()
+        {
+            return dummyValor + " " + feedItem.Timestamp;
         }
 
     }
