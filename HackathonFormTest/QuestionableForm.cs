@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace HackathonFormTest
 {
-    public partial class AcceptedForm : Form
+    public partial class QuestionableForm : Form
     {
         private MainForm parent;
 
-        public AcceptedForm()
+        public QuestionableForm()
         {
             InitializeComponent();
         }
@@ -25,15 +25,16 @@ namespace HackathonFormTest
             parent = Program.GetMainForm();
         }
 
-        private void AcceptedForm_FormClosing(object sender, FormClosingEventArgs e)
+
+        internal void InformQuestioned(QuestionedPriceFeedItem feedItem)
         {
-            parent.ToggleAcceptedDisplay();
-            e.Cancel = true;
+            questionedListBox.Items.Add(feedItem);
         }
 
-        internal void InformAccepted(PriceFeedItem feedItem)
+        private void QuestionableForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            acceptedListBox.Items.Add(feedItem);
+            parent.ToggleQuestionableDisplay();
+            e.Cancel = true;
         }
     }
 }

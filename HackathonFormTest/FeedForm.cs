@@ -30,7 +30,8 @@ namespace HackathonFormTest
         {
             PriceFeedItem item = DummyClasses.GetNextFeedItem();
             feedList.Items.Add(item);
-            parent.SetTime(item.Timestamp);
+            
+            parent.InformParent(item);
         }
 
         public void SetUpForm()
