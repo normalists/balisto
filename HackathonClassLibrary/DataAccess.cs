@@ -25,6 +25,14 @@ namespace HackathonClassLibrary
         {
             return db.ExecuteDataSet(CommandType.Text, SQLcode);
         }
+        public DataSet GetDataSet(string ProcedureName, object[] Parameters)
+        {
+            return db.ExecuteDataSet(ProcedureName, Parameters);
+        }
+        public void ExecuteProcedure(string ProcedureName, object[] Parameters)
+        {
+            db.ExecuteNonQuery(ProcedureName, Parameters);
+        }
     }
 
     public class PriceFeedHandler
@@ -80,6 +88,12 @@ namespace HackathonClassLibrary
             n.Value = decimal.Parse(dr["value"].ToString());
 
             return n;
+        }
+
+        private static void UpdateAverage(PriceFeedItem i, DataAccess da)
+        {
+            object[] p = { i.GSN, i.Valor, i.Timestamp, i.Value, i.Currency, i.ValueType, i.StatisticType, "" };
+            da.ExecuteProcedure("normalist_update_averages",p);
         }
     }
 }
