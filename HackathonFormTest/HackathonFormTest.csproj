@@ -58,6 +58,12 @@
     <Compile Include="AcceptedForm.Designer.cs">
       <DependentUpon>AcceptedForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ArbiterTerminal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArbiterTerminal.Designer.cs">
+      <DependentUpon>ArbiterTerminal.cs</DependentUpon>
+    </Compile>
     <Compile Include="FeedForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +98,9 @@
     </Compile>
     <EmbeddedResource Include="AcceptedForm.resx">
       <DependentUpon>AcceptedForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ArbiterTerminal.resx">
+      <DependentUpon>ArbiterTerminal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeedForm.resx">
       <DependentUpon>FeedForm.cs</DependentUpon>

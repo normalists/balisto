@@ -41,7 +41,15 @@ namespace HackathonClassLibrary
         public static List<NewsFeedItem> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
         {
             // todo need to link up
-            return new List<NewsFeedItem>();
+
+            List<NewsFeedItem> tests = new List<NewsFeedItem>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                NewsFeedItem n = new NewsFeedItem();
+                tests.Add(n);
+            }
+            return tests;
         }
 
         private static int dummyValor = 1;
@@ -136,12 +144,15 @@ namespace HackathonClassLibrary
 
         private Dictionary<int, ManualOutcome> decisionLookup;
 
+        private ManualOutcome arbiterDecision;
+
         public QuestionedPriceFeedItem(PriceFeedItem feedItem)
         {
             this.feedItem = feedItem;
             this.dummyValor = DummyClasses.GetNextDummyValor();
             //quickTerminalIds = new List<int>();
             decisionLookup = new Dictionary<int, ManualOutcome>();
+            arbiterDecision = ManualOutcome.Pending;
         }
 
         public PriceFeedItem FeedItem
@@ -233,9 +244,18 @@ namespace HackathonClassLibrary
         {
             get
             {
+                if (arbiterDecision != ManualOutcome.Pending)
+                {
+                    return arbiterDecision;
+                }
                 return decisionLookup.Values.ToList()[0];
             }
 
+        }
+
+        public void DecisionMade(ManualOutcome manualOutcome)
+        {
+            arbiterDecision = manualOutcome;
         }
     }
 }

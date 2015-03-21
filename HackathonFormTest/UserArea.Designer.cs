@@ -33,6 +33,7 @@
             this.usersOnlineNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.usersRequiredNumeric = new System.Windows.Forms.NumericUpDown();
+            this.showArbiterButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.usersRequiredNumeric)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,6 +96,16 @@
             0,
             0});
             // 
+            // showArbiterButton
+            // 
+            this.showArbiterButton.Location = new System.Drawing.Point(139, 12);
+            this.showArbiterButton.Name = "showArbiterButton";
+            this.showArbiterButton.Size = new System.Drawing.Size(120, 23);
+            this.showArbiterButton.TabIndex = 0;
+            this.showArbiterButton.Text = "Show Arbiter Terminal";
+            this.showArbiterButton.UseVisualStyleBackColor = true;
+            this.showArbiterButton.Click += new System.EventHandler(this.showArbiterButton_Click);
+            // 
             // UserArea
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -104,6 +115,7 @@
             this.Controls.Add(this.usersOnlineNumber);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.usersOnlineLabel);
+            this.Controls.Add(this.showArbiterButton);
             this.Controls.Add(this.addUserButton);
             this.Name = "UserArea";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -122,5 +134,6 @@
         private System.Windows.Forms.Label usersOnlineNumber;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown usersRequiredNumeric;
+        private System.Windows.Forms.Button showArbiterButton;
     }
 }
