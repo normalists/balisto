@@ -28,10 +28,9 @@ namespace Normalist
         //Create the public method for the NewsFeedItem
         public NewsFeedItem()
 			{
-				
 			}
 
-        List<DataRow> list = dt.AsEnumerable().ToList();
+        // use this access method for lst  : List<DataRow> list = dt.AsEnumerable().ToList();
         public DataTable GetRelevantNewsFeedItem(string timePeriod, string searchKeyword)
         {
             SqlDataAdapter sqlDA = null;
