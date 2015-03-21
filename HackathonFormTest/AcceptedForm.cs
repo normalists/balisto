@@ -15,6 +15,7 @@ namespace HackathonFormTest
     {
         private MainForm parent;
         private List<PriceFeedItem> feedItemsAccepted;
+        private Dictionary<int, List<PriceFeedItem>> priceFeedItemLookup;
 
         public AcceptedForm()
         {
@@ -25,6 +26,7 @@ namespace HackathonFormTest
         {
             parent = Program.GetMainForm();
             feedItemsAccepted = new List<PriceFeedItem>();
+            priceFeedItemLookup = new Dictionary<int, List<PriceFeedItem>>();
         }
 
         private void AcceptedForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -38,6 +40,20 @@ namespace HackathonFormTest
             feedItemsAccepted.Add(feedItem);
             acceptedListBox.Items.Add(feedItem);
 
+            if (!priceFeedItemLookup.ContainsKey(feedItem.Valor))
+            {
+                priceFeedItemLookup.Add(feedItem.Valor, new List<PriceFeedItem>());
+            }
+
+            priceFeedItemLookup[feedItem.Valor].Add(feedItem);
+
+            priceFeedItemLookup[feedItem.Valor].Sort();
+
+            while (priceFeedItemLookup[feedItem.Valor].Count > 10)
+            {
+                priceFeedItemLookup[feedItem.Valor].RemoveAt(0);
+            }
+
             if (acceptedListBox.Items.Count > 10)
             {
                 acceptedListBox.Items.Remove(feedItemsAccepted[0]);
@@ -45,6 +61,20 @@ namespace HackathonFormTest
             }
         }
 
-        
+
+
+        internal IEnumerable<PriceFeedItem> GetRecentItems(int valor)
+        {
+            if (priceFeedItemLookup.ContainsKey(valor))
+            {
+                return priceFeedItemLookup[valor];
+
+            }
+            else
+            {
+                return new List<PriceFeedItem>();
+            }
+            
+        }
     }
 }

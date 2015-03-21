@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
     <Compile Include="DummyClasses.cs" />
+    <Compile Include="NewsFeedItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

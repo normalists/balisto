@@ -60,5 +60,14 @@ namespace HackathonFormTest
         {
             ((QuestionedPriceFeedItem)questionedListBox.Items[questionedListBox.Items.IndexOf(currentIssue)]).CancelWork(quickTerminalId);
         }
+
+
+
+        internal void InformDealtWith(QuestionedPriceFeedItem questionedFeedItem)
+        {
+            questionedListBox.Items.Remove(questionedFeedItem);
+        }
+
+
     }
 }

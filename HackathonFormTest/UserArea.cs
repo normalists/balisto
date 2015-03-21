@@ -103,5 +103,27 @@ namespace HackathonFormTest
         {
             parent.CancelWork(currentIssue, quickTerminalId);
         }
+
+        internal IEnumerable<PriceFeedItem> GetRecentItems(int valor)
+        {
+            return parent.GetRecentItems(valor);
+        }
+
+
+
+        internal void DecisionMade(QuestionedPriceFeedItem currentIssue)
+        {
+            if (currentIssue.DecisionsMade >= 2)
+            {
+                if (currentIssue.DecisionsAgree && (currentIssue.TopDecision == ManualOutcome.Accepted || currentIssue.TopDecision == ManualOutcome.Rejected) )
+                {
+                    parent.DecisionMade(currentIssue);
+                }
+                else
+                {
+                    // todo arbiter decision required
+                }
+            }
+        }
     }
 }

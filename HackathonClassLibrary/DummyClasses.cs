@@ -34,6 +34,7 @@ namespace HackathonClassLibrary
 
         public static List<NewsFeedItem> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
         {
+            // todo need to link up
             return new List<NewsFeedItem>();
         }
 
@@ -52,12 +53,16 @@ namespace HackathonClassLibrary
             PriceFeedHandler.UpdateAverage(feedItem, da);
             // todo: throw new NotImplementedException();
         }
+
+        //public static 
+
+        //public static IEnumerable<PriceFeedItem> Get
     }
 
-    public class NewsFeedItem
-    {
+    //public class NewsFeedItem
+    //{
 
-    }
+    //}
 
     public enum AutomatedOutcome
     {
@@ -67,7 +72,16 @@ namespace HackathonClassLibrary
 
     }
 
-    public class PriceFeedItem
+    public enum ManualOutcome
+    {
+        Accepted,
+        Rejected,
+        Postponed,
+        Pending
+
+    }
+
+    public class PriceFeedItem : IComparable<PriceFeedItem>
     {
 
         public PriceFeedItem()
@@ -96,6 +110,12 @@ namespace HackathonClassLibrary
             return GSN.ToString() + " // " + Valor.ToString() + "//" + Timestamp.ToString();
         }
 
+
+
+        public int CompareTo(PriceFeedItem other)
+        {
+            return this.GSN.CompareTo(other.GSN);
+        }
     }
 
 
@@ -106,13 +126,16 @@ namespace HackathonClassLibrary
 
         private int dummyValor;
 
-        private List<int> quickTerminalIds;
+        //private List<int> quickTerminalIds;
+
+        private Dictionary<int, ManualOutcome> decisionLookup;
 
         public QuestionedPriceFeedItem(PriceFeedItem feedItem)
         {
             this.feedItem = feedItem;
             this.dummyValor = DummyClasses.GetNextDummyValor();
-            quickTerminalIds = new List<int>();
+            //quickTerminalIds = new List<int>();
+            decisionLookup = new Dictionary<int, ManualOutcome>();
         }
 
         public PriceFeedItem FeedItem
@@ -131,25 +154,82 @@ namespace HackathonClassLibrary
 
         public bool ReadBy(int quickTerminalId)
         {
-            return quickTerminalIds.Contains(quickTerminalId);
+            return decisionLookup.Keys.Contains(quickTerminalId);
         }
 
         public void CancelWork(int quickTerminalId)
         {
-            quickTerminalIds.Remove(quickTerminalId);
+            decisionLookup.Remove(quickTerminalId);
         }
 
         public int GetWorkerCount()
         {
-            return quickTerminalIds.Count;
+            return decisionLookup.Keys.Count;
         }
 
         public void Checkout(int quickTerminalId)
         {
-            if (!quickTerminalIds.Contains(quickTerminalId))
+            if (!decisionLookup.ContainsKey(quickTerminalId))
             {
-                quickTerminalIds.Add(quickTerminalId);
+                decisionLookup.Add(quickTerminalId, ManualOutcome.Pending);
             }
+        }
+
+        public int Valor
+        {
+            get
+            {
+                return feedItem.Valor;
+            }
+        }
+
+        public DateTime Timestamp
+        {
+            get
+            {
+                return feedItem.Timestamp;
+            }
+        }
+
+        public decimal Value
+        {
+            get
+            {
+                return feedItem.Value;
+            }
+        }
+
+        public void DecisionMade(int quickTerminalId, ManualOutcome manualOutcome)
+        {
+            decisionLookup[quickTerminalId] = manualOutcome;
+        }
+
+        public int DecisionsMade
+        {
+            get
+            {
+                return decisionLookup.Values.ToList().FindAll(delegate(ManualOutcome outcome) { return outcome != ManualOutcome.Pending; }).Count;
+            }
+        }
+
+
+
+        public bool DecisionsAgree
+        {
+            get
+            {
+                return decisionLookup.Values.ToList()[0] == decisionLookup.Values.ToList()[1];
+            }
+
+        }
+
+        public ManualOutcome TopDecision
+        {
+            get
+            {
+                return decisionLookup.Values.ToList()[0];
+            }
+
         }
     }
 }

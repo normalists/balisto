@@ -68,6 +68,7 @@ namespace HackathonFormTest
                     
                     break;
                 case AutomatedOutcome.Deleted:
+                    // to do - should just be removed
                     break;
                 case AutomatedOutcome.Questionable:
                     QuestionedPriceFeedItem qItem = new QuestionedPriceFeedItem(feedItem);
@@ -228,6 +229,30 @@ namespace HackathonFormTest
         internal void CancelWork(QuestionedPriceFeedItem currentIssue, int quickTerminalId)
         {
             questionableForm.CancelWork(currentIssue, quickTerminalId);
+        }
+
+        internal IEnumerable<PriceFeedItem> GetRecentItems(int valor)
+        {
+            return acceptedForm.GetRecentItems(valor);
+        }
+
+
+
+        internal void DecisionMade(QuestionedPriceFeedItem questionedFeedItem)
+        {
+            switch (questionedFeedItem.TopDecision)
+            {
+                case ManualOutcome.Accepted:
+                    acceptedForm.InformAccepted(questionedFeedItem.FeedItem);
+                    questionableForm.InformDealtWith(questionedFeedItem);
+                    DummyClasses.SaveAcceptedItem(questionedFeedItem.FeedItem, da);
+                    break;
+                case ManualOutcome.Rejected:
+                    questionableForm.InformDealtWith(questionedFeedItem);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
