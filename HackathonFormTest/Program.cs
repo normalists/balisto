@@ -29,5 +29,10 @@ namespace HackathonFormTest
         {
             return mainForm;
         }
+
+        internal static UserArea GetUserArea()
+        {
+            return mainForm.GetUserArea();
+        }
     }
 }

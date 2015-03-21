@@ -34,6 +34,7 @@
             this.timeLabel = new System.Windows.Forms.Label();
             this.toggleAcceptedDisplay = new System.Windows.Forms.Button();
             this.questionableDisplay = new System.Windows.Forms.Button();
+            this.userAreaDisplayButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // toggleFeedDisplay
@@ -81,14 +82,25 @@
             this.questionableDisplay.UseVisualStyleBackColor = true;
             this.questionableDisplay.Click += new System.EventHandler(this.questionableDisplay_Click);
             // 
+            // userAreaDisplayButton
+            // 
+            this.userAreaDisplayButton.Location = new System.Drawing.Point(206, 55);
+            this.userAreaDisplayButton.Name = "userAreaDisplayButton";
+            this.userAreaDisplayButton.Size = new System.Drawing.Size(130, 23);
+            this.userAreaDisplayButton.TabIndex = 0;
+            this.userAreaDisplayButton.Text = "User Interfaces";
+            this.userAreaDisplayButton.UseVisualStyleBackColor = true;
+            this.userAreaDisplayButton.Click += new System.EventHandler(this.userAreaDisplayButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 162);
+            this.ClientSize = new System.Drawing.Size(384, 162);
             this.Controls.Add(this.questionableDisplay);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.toggleAcceptedDisplay);
+            this.Controls.Add(this.userAreaDisplayButton);
             this.Controls.Add(this.toggleFeedDisplay);
             this.Location = new System.Drawing.Point(100, 100);
             this.Name = "MainForm";
@@ -107,6 +119,7 @@
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Button toggleAcceptedDisplay;
         private System.Windows.Forms.Button questionableDisplay;
+        private System.Windows.Forms.Button userAreaDisplayButton;
     }
 }
 

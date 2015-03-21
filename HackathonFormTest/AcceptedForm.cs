@@ -14,6 +14,7 @@ namespace HackathonFormTest
     public partial class AcceptedForm : Form
     {
         private MainForm parent;
+        private List<PriceFeedItem> feedItemsAccepted;
 
         public AcceptedForm()
         {
@@ -23,6 +24,7 @@ namespace HackathonFormTest
         public void SetUpForm()
         {
             parent = Program.GetMainForm();
+            feedItemsAccepted = new List<PriceFeedItem>();
         }
 
         private void AcceptedForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -33,7 +35,16 @@ namespace HackathonFormTest
 
         internal void InformAccepted(PriceFeedItem feedItem)
         {
+            feedItemsAccepted.Add(feedItem);
             acceptedListBox.Items.Add(feedItem);
+
+            if (acceptedListBox.Items.Count > 10)
+            {
+                acceptedListBox.Items.Remove(feedItemsAccepted[0]);
+                feedItemsAccepted.RemoveAt(0);
+            }
         }
+
+        
     }
 }

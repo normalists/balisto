@@ -105,10 +105,13 @@ namespace HackathonClassLibrary
 
         private int dummyValor;
 
+        private List<int> quickTerminalIds;
+
         public QuestionedPriceFeedItem(PriceFeedItem feedItem)
         {
             this.feedItem = feedItem;
             this.dummyValor = DummyClasses.GetNextDummyValor();
+            quickTerminalIds = new List<int>();
         }
 
         public PriceFeedItem FeedItem
@@ -124,5 +127,28 @@ namespace HackathonClassLibrary
             return feedItem.ToString();
         }
 
+
+        public bool ReadBy(int quickTerminalId)
+        {
+            return quickTerminalIds.Contains(quickTerminalId);
+        }
+
+        public void CancelWork(int quickTerminalId)
+        {
+            quickTerminalIds.Remove(quickTerminalId);
+        }
+
+        public int GetWorkerCount()
+        {
+            return quickTerminalIds.Count;
+        }
+
+        public void Checkout(int quickTerminalId)
+        {
+            if (!quickTerminalIds.Contains(quickTerminalId))
+            {
+                quickTerminalIds.Add(quickTerminalId);
+            }
+        }
     }
 }

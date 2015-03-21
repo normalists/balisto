@@ -77,6 +77,18 @@
     <Compile Include="QuestionableForm.Designer.cs">
       <DependentUpon>QuestionableForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="QuickTerminal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuickTerminal.Designer.cs">
+      <DependentUpon>QuickTerminal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserArea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserArea.Designer.cs">
+      <DependentUpon>UserArea.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AcceptedForm.resx">
       <DependentUpon>AcceptedForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -97,6 +109,12 @@
     </Compile>
     <EmbeddedResource Include="QuestionableForm.resx">
       <DependentUpon>QuestionableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuickTerminal.resx">
+      <DependentUpon>QuickTerminal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserArea.resx">
+      <DependentUpon>UserArea.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

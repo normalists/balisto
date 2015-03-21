@@ -54,14 +54,15 @@ namespace HackathonFormTest
 
         internal void ClearOut(PriceFeedItem feedItem)
         {
-            //feedItemsToRemove.Add(feedItem);
+            feedItemsToRemove.Add(feedItem);
 
-            //while (feedItemsToRemove.Count > 0 && feedList.Items.Count > 10)
-            //{
-            //    feedList.Items.Remove(feedItemsToRemove[0]);
-            //}
+            if (feedList.Items.Count > 10)
+            {
+                feedList.Items.Remove(feedItemsToRemove[0]);
+                feedItemsToRemove.RemoveAt(0);
+            }
 
-            feedList.Items.Remove(feedItem);
+            //feedList.Items.Remove(feedItem);
         }
 
 

@@ -16,12 +16,14 @@ namespace HackathonFormTest
         FeedForm feedForm;
         AcceptedForm acceptedForm;
         QuestionableForm questionableForm;
+        UserArea userArea;
 
         public DataAccess da;
 
         bool feedFormShown;
         bool acceptedFormShown;
         bool questionableFormShown;
+        bool userAreaShow;
 
         DateTime latestFeedTimestamp;
 
@@ -47,6 +49,10 @@ namespace HackathonFormTest
             questionableForm.SetUpForm();
             questionableFormShown = false;
 
+            userArea = new UserArea();
+            userArea.SetUpForm();
+            userAreaShow = false;
+
             feedTimer.Start();
         }
 
@@ -59,7 +65,7 @@ namespace HackathonFormTest
                 case AutomatedOutcome.Accepted:
                     acceptedForm.InformAccepted(feedItem);
                     DummyClasses.SaveAcceptedItem(feedItem);
-                    feedForm.ClearOut(feedItem);
+                    
                     break;
                 case AutomatedOutcome.Deleted:
                     break;
@@ -70,6 +76,8 @@ namespace HackathonFormTest
                 default:
                     break;
             }
+
+            feedForm.ClearOut(feedItem);
         }
 
         
@@ -89,6 +97,13 @@ namespace HackathonFormTest
         {
             ToggleQuestionableDisplay();
         }
+
+        private void userAreaDisplayButton_Click(object sender, EventArgs e)
+        {
+            ToggleUserAreaDisplay();
+        }
+
+        
 
         
 
@@ -113,6 +128,15 @@ namespace HackathonFormTest
 
             UpdateVisibilities();
         }
+
+        internal void ToggleUserAreaDisplay()
+        {
+            userAreaShow = !userAreaShow;
+
+            UpdateVisibilities();
+        }
+
+
 
         private void UpdateVisibilities()
         {
@@ -144,6 +168,15 @@ namespace HackathonFormTest
             else
             {
                 questionableForm.Hide();
+            }
+
+            if (userAreaShow)
+            {
+                userArea.Show();
+            }
+            else
+            {
+                userArea.Hide();
             }
 
         }
@@ -178,6 +211,23 @@ namespace HackathonFormTest
 
 
 
-        
+
+
+
+
+        internal UserArea GetUserArea()
+        {
+            return userArea;
+        }
+
+        internal QuestionedPriceFeedItem GetNextIssue(int quickTerminalId)
+        {
+            return questionableForm.GetNextIssue(quickTerminalId);
+        }
+
+        internal void CancelWork(QuestionedPriceFeedItem currentIssue, int quickTerminalId)
+        {
+            questionableForm.CancelWork(currentIssue, quickTerminalId);
+        }
     }
 }

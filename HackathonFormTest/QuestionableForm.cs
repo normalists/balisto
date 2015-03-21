@@ -36,5 +36,29 @@ namespace HackathonFormTest
             parent.ToggleQuestionableDisplay();
             e.Cancel = true;
         }
+
+        internal QuestionedPriceFeedItem GetNextIssue(int quickTerminalId)
+        {
+            //bool found = false;
+            int index = 0;
+            while (questionedListBox.Items.Count > index)
+            {
+                QuestionedPriceFeedItem item = (QuestionedPriceFeedItem)questionedListBox.Items[index];
+                if (!item.ReadBy(quickTerminalId) && item.GetWorkerCount() < 2)
+                {
+                    item.Checkout(quickTerminalId);
+                    return (QuestionedPriceFeedItem)questionedListBox.Items[index];
+                }
+
+                index++;
+            }
+
+            return null;
+        }
+
+        internal void CancelWork(QuestionedPriceFeedItem currentIssue, int quickTerminalId)
+        {
+            ((QuestionedPriceFeedItem)questionedListBox.Items[questionedListBox.Items.IndexOf(currentIssue)]).CancelWork(quickTerminalId);
+        }
     }
 }
