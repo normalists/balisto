@@ -15,12 +15,18 @@ namespace HackathonFormTest
     {
         private MainForm parent;
 
+        private ArbiterTerminal arbiter;
+
         int usersOnline;
 
         int nextId = 1;
 
+        bool showArbiter;
+
         private List<QuickTerminal> quickTerminals;
         private int usersRequired;
+
+        private List<QuestionedPriceFeedItem> arbiterFeedItems;
 
         public UserArea()
         {
@@ -32,6 +38,13 @@ namespace HackathonFormTest
             parent = Program.GetMainForm();
             //usersRequiredCombo.SelectedText = usersRequiredCombo.Items[0].ToString();
             quickTerminals = new List<QuickTerminal>();
+            showArbiter = false;
+
+            arbiterFeedItems = new List<QuestionedPriceFeedItem>();
+
+            arbiter = new ArbiterTerminal();
+            arbiter.SetUpForm();
+
             UpdateDisplay();
 
             
@@ -51,6 +64,12 @@ namespace HackathonFormTest
         private void addUserButton_Click(object sender, EventArgs e)
         {
             CreateNewTerminal();
+            UpdateDisplay();
+        }
+
+        private void showArbiterButton_Click(object sender, EventArgs e)
+        {
+            showArbiter = !showArbiter;
             UpdateDisplay();
         }
 
@@ -78,6 +97,15 @@ namespace HackathonFormTest
             else
             {
                 usersOnlineNumber.ForeColor = Color.Red;
+            }
+
+            if (showArbiter)
+            {
+                arbiter.Show();
+            }
+            else
+            {
+                arbiter.Hide();
             }
 
         }
@@ -115,15 +143,38 @@ namespace HackathonFormTest
         {
             if (currentIssue.DecisionsMade >= 2)
             {
-                if (currentIssue.DecisionsAgree && (currentIssue.TopDecision == ManualOutcome.Accepted || currentIssue.TopDecision == ManualOutcome.Rejected) )
+                if (currentIssue.DecisionsAgree && (currentIssue.TopDecision == ManualOutcome.Accepted || currentIssue.TopDecision == ManualOutcome.Rejected))
                 {
                     parent.DecisionMade(currentIssue);
                 }
                 else
                 {
-                    // todo arbiter decision required
+                    arbiterFeedItems.Add(currentIssue);
                 }
             }
+        }
+
+        internal void DecisionMadeArbiter(QuestionedPriceFeedItem currentIssue)
+        {
+            parent.DecisionMade(currentIssue);
+            arbiterFeedItems.Remove(currentIssue);
+        }
+
+
+
+        internal QuestionedPriceFeedItem GetNextArbiterIssue()
+        {
+            if (arbiterFeedItems.Count > 0)
+            {
+                return arbiterFeedItems[0];
+            }
+
+            return null;
+        }
+
+        internal void ToggleArbiterDisplay()
+        {
+            showArbiter = !showArbiter;
         }
     }
 }
