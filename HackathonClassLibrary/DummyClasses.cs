@@ -121,7 +121,7 @@ namespace HackathonClassLibrary
 
         public override string ToString()
         {
-            return dummyValor + " " + feedItem.Timestamp;
+            return feedItem.ToString();
         }
 
     }

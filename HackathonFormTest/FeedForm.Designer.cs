@@ -36,16 +36,18 @@
             this.feedList.FormattingEnabled = true;
             this.feedList.Location = new System.Drawing.Point(12, 12);
             this.feedList.Name = "feedList";
-            this.feedList.Size = new System.Drawing.Size(258, 108);
+            this.feedList.Size = new System.Drawing.Size(645, 108);
             this.feedList.TabIndex = 0;
             // 
             // FeedForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 198);
+            this.ClientSize = new System.Drawing.Size(669, 162);
             this.Controls.Add(this.feedList);
+            this.Location = new System.Drawing.Point(600, 100);
             this.Name = "FeedForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "FeedForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FeedForm_FormClosing);
             this.ResumeLayout(false);

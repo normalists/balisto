@@ -36,16 +36,18 @@
             this.questionedListBox.FormattingEnabled = true;
             this.questionedListBox.Location = new System.Drawing.Point(12, 12);
             this.questionedListBox.Name = "questionedListBox";
-            this.questionedListBox.Size = new System.Drawing.Size(120, 95);
+            this.questionedListBox.Size = new System.Drawing.Size(543, 95);
             this.questionedListBox.TabIndex = 0;
             // 
             // QuestionableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(567, 206);
             this.Controls.Add(this.questionedListBox);
+            this.Location = new System.Drawing.Point(600, 400);
             this.Name = "QuestionableForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "QuestionableForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.QuestionableForm_FormClosing);
             this.ResumeLayout(false);
