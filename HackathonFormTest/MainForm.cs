@@ -58,7 +58,7 @@ namespace HackathonFormTest
 
         private void InformObserversNewFeedItem(PriceFeedItem feedItem)
         {
-            AutomatedOutcome outcome = DummyClasses.AutomaticProcessResult(feedItem);
+            AutomatedOutcome outcome = DummyClasses.AutomaticProcessResult(feedItem, da);
 
             switch (outcome)
             {

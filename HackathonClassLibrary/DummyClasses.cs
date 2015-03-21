@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,19 +18,24 @@ namespace HackathonClassLibrary
 
         private static int itemCounter = 1;
 
-        public static AutomatedOutcome AutomaticProcessResult(PriceFeedItem feedItemToCheck)
+        public static AutomatedOutcome AutomaticProcessResult(PriceFeedItem feedItemToCheck, DataAccess da)
         {
-            itemCounter++;
+            string SQL = @"exec checkvalue3 " + feedItemToCheck.GSN.ToString();
 
-            if (itemCounter % 10 == 0 )
-            {
-                return AutomatedOutcome.Questionable;
-            }
-            else
-            {
-                return AutomatedOutcome.Accepted;
-            }
+            DataSet ds = da.GetDataSet(SQL);
+
+            string result = ds.Tables[0].Rows[0][0].ToString();
             
+            switch(result){
+                case "rejected":
+                    return AutomatedOutcome.Deleted;
+                    break;
+                case "investigate":
+                    return AutomatedOutcome.Questionable;
+                    break;
+                default :
+                    return AutomatedOutcome.Accepted;
+            }
         }
 
         public static List<NewsFeedItem> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)

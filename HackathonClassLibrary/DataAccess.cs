@@ -88,7 +88,7 @@ namespace HackathonClassLibrary
 
         public static void UpdateAverage(PriceFeedItem i, DataAccess da)
         {
-            if (i.GSN >= 10000040578) { return; }
+            return;
 
             if((Array.IndexOf(statisticTypeWhiteList,i.StatisticType)==-1)||(Array.IndexOf(valueTypeWhiteList,i.ValueType)==-1))
             {
@@ -97,76 +97,87 @@ namespace HackathonClassLibrary
 
             try
             {
-                string SQL = @"select 
-	                    count(valor) 
-                    from 
-	                    averages_data a
-                    where 
-	                    a.valor = " + i.Valor.ToString();
+                string SQL = @"
+                    declare @sample table
+                    (
+	                    price numeric(24,12),
+	                    [GSN] [varchar](50) NULL,
+	                    [date] [datetime] NULL,
+	                    [original_date] [varchar](50) NULL,
+	                    [marketCode] [varchar](50) NULL,
+	                    [currencyCode] [varchar](50) NULL,
+	                    [valorNumber] [varchar](50) NULL,
+	                    [valueType] [varchar](50) NULL,
+	                    [statisticType] [varchar](50) NULL,
+	                    [valueStyle] [varchar](50) NULL,
+	                    [value] [varchar](50) NULL
+                    )
 
-                int rCount = int.Parse(da.db.ExecuteScalar(da.db.GetSqlStringCommand(SQL)).ToString());
+                    declare @mean numeric(24,12)
+                    declare @variance numeric(24,12)
 
-                int rows = 0;
+                    insert into @sample
+			            select
+				            top 10
+				            cast(value as numeric(24,12)) as price,
+				            GSN, [date], original_date, marketCode, currencyCode, valorNumber, valueType, statisticType, valueStyle, value
+			            from
+				            mdf_stream_emulated
+			            where
+				            datediff(ss, [date], @timeslot) > 0
+				            and
+				            statisticType in (2,3,9,10,11,12)
+				            and
+				            valueType in (1,2,3,4,7)
+				            and 
+				            currencyCode = @currrencyCode
+				            and
+				            valorNumber = @valor
+			            order by
+				            gsn desc
 
-                if (rCount < 10)
-                {
-                    // insert
-                    SQL = @"insert into averages_data(gsn,valor,[timestamp],price,currencyCode,valueType,statisticType,valueStyle)
-		                    values(@GSN,@valor,@timestamp,@price,@currencyCode,@valueType,@statisticType,@valueStyle)";
+		            select
+			            @mean = avg(price),
+			            @variance = var(price)
+		            from
+			            @sample
+
+		            if(@mean is not null)
+			            begin
+				            insert into averages(GSN, valor, lastUpdated, currencyCode, mean, variance, avgDifference, avgProportion)
+				            select distinct
+					            @GSN,
+					            @valor as Valor,
+					            @timeslot,
+					            @currrencyCode as CurrencyCode,
+					            @mean as Mean,
+					            @variance as Variance,
+					            avg([difference]) as avgDifference,
+					            avg(proportion) as avgProportion
+				            from
+					            (select
+						            s.valorNumber,
+						            s.[date],
+						            s.price,
+						            @mean as mean,
+						            abs(s.price - @mean) as [difference],
+						            abs(s.price - @mean) / s.price as [proportion]
+					            from
+						            @sample s
+					            ) aa
+			            end";
 
                     DbCommand insCmd = da.db.GetSqlStringCommand(SQL);
                     da.db.AddInParameter(insCmd, "GSN", DbType.Int64, i.GSN);
                     da.db.AddInParameter(insCmd, "valor", DbType.Int32, i.Valor);
-                    da.db.AddInParameter(insCmd, "timestamp", DbType.DateTime, i.Timestamp);
+                    da.db.AddInParameter(insCmd, "timeslot", DbType.DateTime, i.Timestamp);
                     da.db.AddInParameter(insCmd, "price", DbType.Decimal, i.Value);
                     da.db.AddInParameter(insCmd, "currencyCode", DbType.Int32, i.Currency);
                     da.db.AddInParameter(insCmd, "valueType", DbType.String, i.ValueType);
                     da.db.AddInParameter(insCmd, "statisticType", DbType.String, i.StatisticType);
                     da.db.AddInParameter(insCmd, "valueStyle", DbType.String, "");
 
-                    rows = da.db.ExecuteNonQuery(insCmd);
-                }
-                else
-                {
-                    // update
-                    SQL = @"select 
-			                    min(GSN) 
-		                    from 
-			                    averages_data a 
-		                    where 
-			                    a.valor = " + i.Valor.ToString();
-
-                    long minGSN = long.Parse(da.db.ExecuteScalar(da.db.GetSqlStringCommand(SQL)).ToString());
-
-                    SQL = @"update
-			                    a
-		                    set
-			                    a.GSN = @GSN, 
-			                    a.valor = @valor, 
-			                    a.[timestamp] = @timestamp, 
-			                    a.price = @price, 
-			                    a.currencyCode = @currencyCode, 
-			                    a.valueType = @valueType, 
-			                    a.statisticType = @statisticType, 
-			                    a.valueStyle = @valueStyle
-		                    from	
-			                    averages_data a
-		                    where
-			                    a.gsn = @MinGSN";
-
-                    DbCommand updCmd = da.db.GetSqlStringCommand(SQL);
-                    da.db.AddInParameter(updCmd, "GSN", DbType.Int64, i.GSN);
-                    da.db.AddInParameter(updCmd, "valor", DbType.Int32, i.Valor);
-                    da.db.AddInParameter(updCmd, "timestamp", DbType.DateTime, i.Timestamp);
-                    da.db.AddInParameter(updCmd, "price", DbType.Decimal, i.Value);
-                    da.db.AddInParameter(updCmd, "currencyCode", DbType.Int32, i.Currency);
-                    da.db.AddInParameter(updCmd, "valueType", DbType.String, i.ValueType);
-                    da.db.AddInParameter(updCmd, "statisticType", DbType.String, i.StatisticType);
-                    da.db.AddInParameter(updCmd, "valueStyle", DbType.String, "");
-                    da.db.AddInParameter(updCmd, "MinGSN", DbType.Int64, minGSN);
-
-                    rows = da.db.ExecuteNonQuery(updCmd);
-                }
+                    da.db.ExecuteNonQuery(insCmd);
             }
             catch (Exception ex)
             {
