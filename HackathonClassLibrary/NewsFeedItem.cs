@@ -31,7 +31,7 @@ namespace Normalist
 			}
 
         // use this access method for lst  : List<DataRow> list = dt.AsEnumerable().ToList();
-        public DataTable GetRelevantNewsFeedItem(string timePeriod, string searchKeyword)
+        public DataTable GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
         {
             SqlDataAdapter sqlDA = null;
 
@@ -42,8 +42,9 @@ namespace Normalist
             using (SqlCommand cmd = new SqlCommand("normalist_get_news_by_caption_and_feed_time", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("varTimePeriod", timePeriod);
-                cmd.Parameters.AddWithValue("varSearchKeyword", searchKeyword);
+                cmd.Parameters.AddWithValue("varFromDate", fromDate);
+                cmd.Parameters.AddWithValue("varToDate", toDate);
+                cmd.Parameters.AddWithValue("varSearchTerm", searchTerm);
                 connection.Open();
                 sqlDA = new SqlDataAdapter();
                 sqlDA.SelectCommand = cmd;
