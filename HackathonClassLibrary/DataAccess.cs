@@ -7,13 +7,14 @@ using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Data.Common;
 
 namespace HackathonClassLibrary
 {
     public class DataAccess
     {
         // singleton
-        private Database db;
+        public Database db;
 
         public DataAccess()
         {
@@ -25,18 +26,13 @@ namespace HackathonClassLibrary
         {
             return db.ExecuteDataSet(CommandType.Text, SQLcode);
         }
-        public DataSet GetDataSet(string ProcedureName, object[] Parameters)
-        {
-            return db.ExecuteDataSet(ProcedureName, Parameters);
-        }
-        public void ExecuteProcedure(string ProcedureName, object[] Parameters)
-        {
-            db.ExecuteNonQuery(ProcedureName, Parameters);
-        }
     }
 
     public class PriceFeedHandler
     {
+        private static int[] statisticTypeWhiteList = { 2, 3, 9, 10, 11, 12 };
+        private static int[] valueTypeWhiteList = { 1, 2, 3, 4, 7 };
+
         public static PriceFeedItem GetNextFeedItem(PriceFeedItem i, DataAccess da)
         {
             string SQL = @"select min(GSN) from mdf_stream_emulated where GSN > " + i.GSN.ToString();
@@ -90,10 +86,94 @@ namespace HackathonClassLibrary
             return n;
         }
 
-        private static void UpdateAverage(PriceFeedItem i, DataAccess da)
+        public static void UpdateAverage(PriceFeedItem i, DataAccess da)
         {
-            object[] p = { i.GSN, i.Valor, i.Timestamp, i.Value, i.Currency, i.ValueType, i.StatisticType, "" };
-            da.ExecuteProcedure("normalist_update_averages",p);
+            if (i.GSN >= 10000040578) { return; }
+
+            if((Array.IndexOf(statisticTypeWhiteList,i.StatisticType)==-1)||(Array.IndexOf(valueTypeWhiteList,i.ValueType)==-1))
+            {
+                return;
+            }
+
+            try
+            {
+                string SQL = @"select 
+	                    count(valor) 
+                    from 
+	                    averages_data a
+                    where 
+	                    a.valor = " + i.Valor.ToString();
+
+                int rCount = int.Parse(da.db.ExecuteScalar(da.db.GetSqlStringCommand(SQL)).ToString());
+
+                int rows = 0;
+
+                if (rCount < 10)
+                {
+                    // insert
+                    SQL = @"insert into averages_data(gsn,valor,[timestamp],price,currencyCode,valueType,statisticType,valueStyle)
+		                    values(@GSN,@valor,@timestamp,@price,@currencyCode,@valueType,@statisticType,@valueStyle)";
+
+                    DbCommand insCmd = da.db.GetSqlStringCommand(SQL);
+                    da.db.AddInParameter(insCmd, "GSN", DbType.Int64, i.GSN);
+                    da.db.AddInParameter(insCmd, "valor", DbType.Int32, i.Valor);
+                    da.db.AddInParameter(insCmd, "timestamp", DbType.DateTime, i.Timestamp);
+                    da.db.AddInParameter(insCmd, "price", DbType.Decimal, i.Value);
+                    da.db.AddInParameter(insCmd, "currencyCode", DbType.Int32, i.Currency);
+                    da.db.AddInParameter(insCmd, "valueType", DbType.String, i.ValueType);
+                    da.db.AddInParameter(insCmd, "statisticType", DbType.String, i.StatisticType);
+                    da.db.AddInParameter(insCmd, "valueStyle", DbType.String, "");
+
+                    rows = da.db.ExecuteNonQuery(insCmd);
+                }
+                else
+                {
+                    // update
+                    SQL = @"select 
+			                    min(GSN) 
+		                    from 
+			                    averages_data a 
+		                    where 
+			                    a.valor = " + i.Valor.ToString();
+
+                    long minGSN = long.Parse(da.db.ExecuteScalar(da.db.GetSqlStringCommand(SQL)).ToString());
+
+                    SQL = @"update
+			                    a
+		                    set
+			                    a.GSN = @GSN, 
+			                    a.valor = @valor, 
+			                    a.[timestamp] = @timestamp, 
+			                    a.price = @price, 
+			                    a.currencyCode = @currencyCode, 
+			                    a.valueType = @valueType, 
+			                    a.statisticType = @statisticType, 
+			                    a.valueStyle = @valueStyle
+		                    from	
+			                    averages_data a
+		                    where
+			                    a.gsn = @MinGSN";
+
+                    DbCommand updCmd = da.db.GetSqlStringCommand(SQL);
+                    da.db.AddInParameter(updCmd, "GSN", DbType.Int64, i.GSN);
+                    da.db.AddInParameter(updCmd, "valor", DbType.Int32, i.Valor);
+                    da.db.AddInParameter(updCmd, "timestamp", DbType.DateTime, i.Timestamp);
+                    da.db.AddInParameter(updCmd, "price", DbType.Decimal, i.Value);
+                    da.db.AddInParameter(updCmd, "currencyCode", DbType.Int32, i.Currency);
+                    da.db.AddInParameter(updCmd, "valueType", DbType.String, i.ValueType);
+                    da.db.AddInParameter(updCmd, "statisticType", DbType.String, i.StatisticType);
+                    da.db.AddInParameter(updCmd, "valueStyle", DbType.String, "");
+                    da.db.AddInParameter(updCmd, "MinGSN", DbType.Int64, minGSN);
+
+                    rows = da.db.ExecuteNonQuery(updCmd);
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+
         }
     }
 }
