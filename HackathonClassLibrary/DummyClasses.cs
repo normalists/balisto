@@ -38,18 +38,20 @@ namespace HackathonClassLibrary
             }
         }
 
-        public static List<NewsFeedItem> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
+        public static IEnumerable<string> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
         {
             // todo need to link up
 
-            List<NewsFeedItem> tests = new List<NewsFeedItem>();
+           return NewsFeedItem.GetRelevantNewsFeedItem(fromDate,toDate,searchTerm);
 
-            for (int i = 0; i < 10; i++)
-            {
-                NewsFeedItem n = new NewsFeedItem();
-                tests.Add(n);
-            }
-            return tests;
+            //List<NewsFeedItem> tests = new List<NewsFeedItem>();
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    NewsFeedItem n = new NewsFeedItem();
+            //    tests.Add(n);
+            //}
+            //return tests;
         }
 
         private static int dummyValor = 1;

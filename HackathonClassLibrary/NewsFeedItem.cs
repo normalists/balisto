@@ -31,13 +31,13 @@ namespace HackathonClassLibrary
 			}
 
         // use this access method for lst  : List<DataRow> list = dt.AsEnumerable().ToList();
-        public DataTable GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
+        public static IEnumerable<string> GetRelevantNewsFeedItem(DateTime fromDate, DateTime toDate, string searchTerm)
         {
             SqlDataAdapter sqlDA = null;
 
             DataTable retdt = new DataTable();
             // Please replace the data source to reflect the DB
-            using (SqlConnection connection = new SqlConnection(@"Data Source=local; Initial Catalog=Normalist;Integrated Security=SSPI;"))
+            using (SqlConnection connection = new SqlConnection(@"Server=WIN764RP;Database=hackathon;User Id=sa;Password=Dagr1eve;"))
 
             using (SqlCommand cmd = new SqlCommand("normalist_get_news_by_caption_and_feed_time", connection))
             {
@@ -51,7 +51,13 @@ namespace HackathonClassLibrary
 
                 sqlDA.Fill(retdt);
             }
-            return retdt;
+
+            List<string> test = new System.Collections.Generic.List<string>();
+            foreach (DataRow r in retdt.Rows)
+            {
+                test.Add(r["headline"].ToString());
+            }
+            return test;
         }
 			
 

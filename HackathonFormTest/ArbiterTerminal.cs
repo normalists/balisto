@@ -179,7 +179,7 @@ namespace HackathonFormTest
 
             string searchTerm = searchTextBox.Text;
 
-            List<NewsFeedItem> news = DummyClasses.GetRelevantNewsFeedItem(dateFrom, dateTo, searchTerm);
+            List<string> news = DummyClasses.GetRelevantNewsFeedItem(dateFrom, dateTo, searchTerm);
 
             newsFeed.Items.AddRange(news.ToArray());
         }
