@@ -64,7 +64,7 @@ namespace HackathonFormTest
             {
                 case AutomatedOutcome.Accepted:
                     acceptedForm.InformAccepted(feedItem);
-                    DummyClasses.SaveAcceptedItem(feedItem);
+                    DummyClasses.SaveAcceptedItem(feedItem,da);
                     
                     break;
                 case AutomatedOutcome.Deleted:
@@ -105,7 +105,7 @@ namespace HackathonFormTest
 
         
 
-        
+
 
 
         internal void ToggleFeedDisplay()
@@ -177,7 +177,7 @@ namespace HackathonFormTest
             else
             {
                 userArea.Hide();
-            }
+        }
 
         }
 
@@ -219,7 +219,7 @@ namespace HackathonFormTest
         {
             return userArea;
         }
-
+        
         internal QuestionedPriceFeedItem GetNextIssue(int quickTerminalId)
         {
             return questionableForm.GetNextIssue(quickTerminalId);

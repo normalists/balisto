@@ -49,7 +49,7 @@
             // 
             // feedTimer
             // 
-            this.feedTimer.Interval = 1000;
+            this.feedTimer.Interval = 10;
             this.feedTimer.Tick += new System.EventHandler(this.feedTimer_Tick);
             // 
             // timeLabel

@@ -47,8 +47,9 @@ namespace HackathonClassLibrary
             return dummyValor;
         }
 
-        public static void SaveAcceptedItem(PriceFeedItem feedItem)
+        public static void SaveAcceptedItem(PriceFeedItem feedItem, DataAccess da)
         {
+            PriceFeedHandler.UpdateAverage(feedItem, da);
             // todo: throw new NotImplementedException();
         }
     }
